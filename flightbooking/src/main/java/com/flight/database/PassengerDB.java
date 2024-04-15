@@ -26,7 +26,7 @@ public class PassengerDB {
      */
     public Passenger selectBySocialSecurityNo(String socialSecurityNo) {
         for (Passenger passenger : passengers) {
-            if (passenger.getSocialSecurityNo().equals(socialSecurityNo)) {
+            if (passenger.getSocialSecurityNo() == socialSecurityNo) {
                 System.out.println("Fundin:" + passenger);
                 return passenger;
             }

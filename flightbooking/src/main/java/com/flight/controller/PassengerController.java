@@ -36,10 +36,9 @@ public class PassengerController {
      * Note: The passenger is created only if there is no existing passenger with the same social security number.
      */
     public void createPassenger(Passenger passenger) {
-        if (passengerDB.selectBySocialSecurityNo(passenger.getSocialSecurityNo()) != null) {
+    
+        if (passengerDB.selectBySocialSecurityNo(passenger.getSocialSecurityNo()) == null) {
             passengerDB.insert(passenger);
-        } else {
-            // Implement behavior for when the passenger already exists or throw an exception.
         }
     }
 

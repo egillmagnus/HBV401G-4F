@@ -56,4 +56,17 @@ public class Passenger {
     public void setSocialSecurityNo(String socialSecurityNo) {
         this.socialSecurityNo = socialSecurityNo;
     }
+
+    /**
+     * Returns a string representation of the passenger.
+     * 
+     * @return A string that represents the passenger details.
+     */
+    @Override
+    public String toString() {
+        return "Passenger{" + "\n" +
+                "name=" + this.name + "\n" +
+                "SSN=" + this.socialSecurityNo + "\n" +
+                '}';
+    }
 }
