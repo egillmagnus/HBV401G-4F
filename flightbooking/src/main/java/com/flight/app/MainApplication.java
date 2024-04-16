@@ -103,6 +103,20 @@ public class MainApplication {
 
     private static void updateFlight() {
         System.out.println("Updating an Existing Flight:");
+
+        // Display all available flights
+        List<Flight> flights = flightController.getAllFlights();
+        if (flights.isEmpty()) {
+            System.out.println("No flights available to update.");
+            return;
+        }
+    
+        System.out.println("Available Flights:");
+        for (Flight flight : flights) {
+            System.out.printf("Flight Number: %s, From: %s, To: %s, Departure: %s, Arrival: %s\n",
+                              flight.getFlightNo(), flight.getOrigin(), flight.getDestination(),
+                              flight.getDepartureDate().format(formatter), flight.getArrivalDate().format(formatter));
+        }
         System.out.print("Enter flight number to update: ");
         String flightNo = scanner.nextLine();
         Flight flight = flightController.getFlight(flightNo);

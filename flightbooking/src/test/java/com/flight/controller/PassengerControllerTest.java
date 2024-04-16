@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PassengerControllerTest {
 
     private PassengerController controller;
-    private PassengerDB mockDB;
 
     @BeforeEach
     void setUp() {
