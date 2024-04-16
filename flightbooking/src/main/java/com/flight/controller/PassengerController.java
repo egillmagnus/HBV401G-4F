@@ -15,8 +15,8 @@ public class PassengerController {
      *
      * @param passengerDB The passenger database used for data operations.
      */
-    public PassengerController(PassengerDB passengerDB) {
-        this.passengerDB = passengerDB;
+    public PassengerController() {
+        this.passengerDB = new PassengerDB();
     }
 
     /**

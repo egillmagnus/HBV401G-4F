@@ -5,6 +5,8 @@ import com.flight.domain.Booking;
 import com.flight.domain.Flight;
 import com.flight.domain.Passenger;
 import com.flight.domain.User;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,29 +16,49 @@ import java.util.List;
  */
 public class BookingController {
     private BookingDB bookingDB;
+    private int currentYear;
+    private int bookingCount;
 
     /**
      * Constructs a BookingController with a new instance of BookingDB.
+     * Initializes booking counter from a persistent storage.
      */
     public BookingController() {
         this.bookingDB = new BookingDB();
+        this.currentYear = LocalDateTime.now().getYear();
+        // Initialize bookingCount from database or file
+        this.bookingCount = 1;
     }
 
     /**
      * Creates a booking and adds it to the database.
+     * Generates a unique booking number automatically based on the last two digits of the year and an enumerating number.
      *
-     * @param bookingNo The unique booking number.
      * @param user The user who made the booking.
      * @param flights A list of flights included in the booking.
      * @param passengers A list of passengers included in the booking.
      * @return The newly created Booking object.
      */
-    public Booking createBooking(String bookingNo, User user, List<Flight> flights, List<Passenger> passengers) {
+    public Booking createBooking(User user, List<Flight> flights, List<Passenger> passengers) {
+        String bookingNo = generateBookingNo();
         Booking booking = new Booking(bookingNo, user, flights, passengers);
         bookingDB.insert(booking);
         return booking;
     }
 
+    /**
+     * Generates a unique booking number based on the current year and a sequence number.
+     *
+     * @return A unique booking number as a String.
+     */
+    private String generateBookingNo() {
+        int yearPart = LocalDateTime.now().getYear() % 100; // Last two digits of the year
+        if (currentYear != LocalDateTime.now().getYear()) {
+            currentYear = LocalDateTime.now().getYear();
+            bookingCount = 0; // Reset counter if year changes
+        }
+        return String.format("%02d%06d", yearPart, ++bookingCount);
+    }
     /**
      * Retrieves a booking from the database by its booking number.
      *

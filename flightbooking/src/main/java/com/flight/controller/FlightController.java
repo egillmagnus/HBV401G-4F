@@ -4,6 +4,7 @@ import com.flight.database.FlightDB;
 import com.flight.domain.Flight;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Controller class for managing Flight objects within a flight booking system.
@@ -78,5 +79,30 @@ public class FlightController {
      */
     public List<Flight> getAllFlights() {
         return flightDB.getAllFlights();
+    }
+
+    /**
+     * Retrieves a list of flights departing from a specified city.
+     *
+     * @param departureCity The city from which the flights depart.
+     * @return A list of flights departing from the specified city.
+     */
+    public List<Flight> getFlightsByDepartureCity(String departureCity) {
+        return flightDB.getAllFlights().stream()
+                       .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity))
+                       .collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a list of flights from a specified departure city to a specified arrival city.
+     *
+     * @param departureCity The departure city.
+     * @param arrivalCity The arrival city.
+     * @return A list of flights from the departure city to the arrival city.
+     */
+    public List<Flight> getFlightsFromTo(String departureCity, String arrivalCity) {
+        return flightDB.getAllFlights().stream()
+                       .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity) && flight.getDestination().equalsIgnoreCase(arrivalCity))
+                       .collect(Collectors.toList());
     }
 }

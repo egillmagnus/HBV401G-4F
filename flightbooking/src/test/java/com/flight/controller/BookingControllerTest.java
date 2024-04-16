@@ -18,6 +18,7 @@ class BookingControllerTest {
     private User user;
     private Flight flight;
     private Passenger passenger;
+    private Booking booking;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +28,7 @@ class BookingControllerTest {
         flight = new Flight("FL100", "New York", "London", LocalDateTime.of(2024, 4, 20, 14, 0), LocalDateTime.of(2024, 4, 20, 18, 0));
         passenger = new Passenger("Jane Doe", "987654321");
 
-        bookingController.createBooking("BK001", user, Arrays.asList(flight), Arrays.asList(passenger));
+        booking = bookingController.createBooking(user, Arrays.asList(flight), Arrays.asList(passenger));
     }
 
     @Test
@@ -36,10 +37,9 @@ class BookingControllerTest {
         Flight newFlight = new Flight("FL200", "Tokyo", "Singapore", LocalDateTime.now(), LocalDateTime.now().plusHours(8));
         Passenger newPassenger = new Passenger("Bob Smith", "123456789");
 
-        Booking newBooking = bookingController.createBooking("BK002", newUser, Arrays.asList(newFlight), Arrays.asList(newPassenger));
+        Booking newBooking = bookingController.createBooking(newUser, Arrays.asList(newFlight), Arrays.asList(newPassenger));
 
         assertNotNull(newBooking);
-        assertEquals("BK002", newBooking.getBookingNo());
         assertEquals(newUser, newBooking.getUser());
         assertTrue(newBooking.getFlights().contains(newFlight));
         assertTrue(newBooking.getPassengers().contains(newPassenger));
@@ -47,7 +47,7 @@ class BookingControllerTest {
 
     @Test
     void testGetBooking() {
-        Booking retrievedBooking = bookingController.getBooking("BK001");
+        Booking retrievedBooking = bookingController.getBooking(booking.getBookingNo());
         assertNotNull(retrievedBooking);
         assertEquals("John Doe", retrievedBooking.getUser().getName());
     }
@@ -58,8 +58,8 @@ class BookingControllerTest {
         Flight updatedFlight = new Flight("FL300", "Berlin", "Paris", LocalDateTime.now(), LocalDateTime.now().plusHours(1));
         Passenger updatedPassenger = new Passenger("Updated Passenger", "321321321");
 
-        bookingController.updateBooking("BK001", updatedUser, Arrays.asList(updatedFlight), Arrays.asList(updatedPassenger));
-        Booking updatedBooking = bookingController.getBooking("BK001");
+        bookingController.updateBooking(booking.getBookingNo(), updatedUser, Arrays.asList(updatedFlight), Arrays.asList(updatedPassenger));
+        Booking updatedBooking = bookingController.getBooking(booking.getBookingNo());
 
         assertEquals("Updated User", updatedBooking.getUser().getName());
         assertTrue(updatedBooking.getFlights().contains(updatedFlight));
@@ -68,9 +68,9 @@ class BookingControllerTest {
 
     @Test
     void testDeleteBooking() {
-        assertNotNull(bookingController.getBooking("BK001"));
-        bookingController.deleteBooking("BK001");
-        assertNull(bookingController.getBooking("BK001"));
+        assertNotNull(bookingController.getBooking(booking.getBookingNo()));
+        bookingController.deleteBooking(booking.getBookingNo());
+        assertNull(bookingController.getBooking(booking.getBookingNo()));
     }
 
     @Test
@@ -79,7 +79,7 @@ class BookingControllerTest {
         User anotherUser = new User("Alice Johnson", 2, "alice@example.com", 987654321);
         Flight anotherFlight = new Flight("FL201", "Mumbai", "Dubai", LocalDateTime.now(), LocalDateTime.now().plusHours(3));
         Passenger anotherPassenger = new Passenger("Bob Smith", "123456789");
-        bookingController.createBooking("BK003", anotherUser, Arrays.asList(anotherFlight), Arrays.asList(anotherPassenger));
+        bookingController.createBooking(anotherUser, Arrays.asList(anotherFlight), Arrays.asList(anotherPassenger));
 
         List<Booking> bookings = bookingController.getAllBookings();
         assertNotNull(bookings);

@@ -17,13 +17,11 @@ public class PassengerControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize the mock database and controller before each test
-        mockDB = new PassengerDB();
-        controller = new PassengerController(mockDB);
+        controller = new PassengerController();
 
         // Set up initial state for the database
-        mockDB.insert(new Passenger("John Doe", "1234567890"));
-        mockDB.insert(new Passenger("Jane Smith", "0987654321"));
+        controller.createPassenger(new Passenger("John Doe", "1234567890"));
+        controller.createPassenger(new Passenger("Jane Smith", "0987654321"));
     }
 
     @Test
@@ -38,13 +36,13 @@ public class PassengerControllerTest {
         Passenger newPassenger = new Passenger("Alice Jones", "1122334455");
         controller.createPassenger(newPassenger);
 
-        Passenger retrievedPassenger = mockDB.selectBySocialSecurityNo("1122334455");
+        Passenger retrievedPassenger = controller.findPassenger("1122334455");
         System.out.println(retrievedPassenger);
         assertTrue(retrievedPassenger != null);
         assertEquals("Alice Jones", retrievedPassenger.getName());
 
         controller.deletePassenger(newPassenger);
-        retrievedPassenger = mockDB.selectBySocialSecurityNo("1122334455");
+        retrievedPassenger = controller.findPassenger("1122334455");
         assertFalse(retrievedPassenger != null);
     }
 }
