@@ -1,6 +1,8 @@
 package com.flight.database;
 
 import com.flight.domain.Flight;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,17 @@ public class FlightDB {
      */
     public FlightDB() {
         this.flights = new ArrayList<>();
+        // Sample flight details
+        flights.add(new Flight("FI101", "Reykjavík", "Akureyri", LocalDateTime.of(2024, 5, 1, 15, 0), LocalDateTime.of(2024, 5, 1, 16, 0)));
+        flights.add(new Flight("FI102", "Reykjavík", "Vestmannaeyjar", LocalDateTime.of(2024, 5, 2, 10, 30), LocalDateTime.of(2024, 5, 2, 11, 15)));
+        flights.add(new Flight("FI103", "Reykjavík", "Egilsstaðir", LocalDateTime.of(2024, 5, 3, 12, 0), LocalDateTime.of(2024, 5, 3, 13, 30)));
+        flights.add(new Flight("FI104", "Reykjavík", "Ísafjörður", LocalDateTime.of(2024, 5, 4, 14, 0), LocalDateTime.of(2024, 5, 4, 14, 45)));
+        flights.add(new Flight("FI105", "Akureyri", "Reykjavík", LocalDateTime.of(2024, 5, 5, 16, 0), LocalDateTime.of(2024, 5, 5, 17, 0)));
+        flights.add(new Flight("FI106", "Egilsstaðir", "Reykjavík", LocalDateTime.of(2024, 5, 6, 11, 0), LocalDateTime.of(2024, 5, 6, 12, 30)));
+        flights.add(new Flight("FI107", "Ísafjörður", "Reykjavík", LocalDateTime.of(2024, 5, 7, 9, 30), LocalDateTime.of(2024, 5, 7, 10, 15)));
+        flights.add(new Flight("FI108", "Vestmannaeyjar", "Reykjavík", LocalDateTime.of(2024, 5, 8, 18, 0), LocalDateTime.of(2024, 5, 8, 18, 45)));
     }
+
 
     /**
      * Inserts a new flight into the database if it does not already exist.

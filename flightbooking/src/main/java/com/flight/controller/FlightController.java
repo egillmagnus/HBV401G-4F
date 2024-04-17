@@ -106,4 +106,13 @@ public class FlightController {
                        .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity) && flight.getDestination().equalsIgnoreCase(arrivalCity))
                        .collect(Collectors.toList());
     }
+
+    public List<Flight> getFlightsFromToByDate(String departureCity, String arrivalCity, LocalDateTime departureDate) {
+        List<Flight> flights = flightDB.getAllFlights();  // Assuming this retrieves all flights
+        return flights.stream()
+                .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity))
+                .filter(flight -> flight.getDestination().equalsIgnoreCase(arrivalCity))
+                .filter(flight -> flight.getDepartureDate().isEqual(departureDate))
+                .collect(Collectors.toList());
+    }
 }
