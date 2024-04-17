@@ -3,6 +3,7 @@ package com.flight.controller;
 import com.flight.database.FlightDB;
 import com.flight.domain.Flight;
 import java.time.LocalDateTime;
+import com.flight.domain.Booking;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,7 @@ public class FlightController {
         flightDB.update(flight);
         return flightDB.getByFlightNo(flightNo);
     }
+
 
     /**
      * Deletes a flight from the database using its flight number.

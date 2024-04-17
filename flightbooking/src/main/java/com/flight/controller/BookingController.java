@@ -40,9 +40,26 @@ public class BookingController {
      * @return The newly created Booking object.
      */
     public Booking createBooking(User user, List<Flight> flights, List<Passenger> passengers) {
-        String bookingNo = generateBookingNo();
-        Booking booking = new Booking(bookingNo, user, flights, passengers);
-        bookingDB.insert(booking);
+        int nSeats = passengers.size();
+        boolean complete = true;
+        Booking booking;
+        for (Flight flight : flights) {
+            if (!flight.checkNSeats(nSeats)) {
+                complete = false;
+                System.out.println("Not enough free seats for flight: " + flight.getFlightNo());
+            }
+        }
+        if (complete) {
+            for (Flight flight : flights) {
+                flight.bookNSeats(nSeats);
+            }
+            String bookingNo = generateBookingNo();
+            booking = new Booking(bookingNo, user, flights, passengers);
+            bookingDB.insert(booking);
+        } else {
+            booking = new Booking(null, user, flights, passengers);
+        }
+
         return booking;
     }
 

@@ -9,6 +9,7 @@ public class Flight {
     private String flightNo;
     private String origin;
     private String destination;
+    private int nFreeSeats;
     private LocalDateTime departureDate;
     private LocalDateTime arrivalDate;
 
@@ -24,6 +25,7 @@ public class Flight {
     public Flight(String flightNo, String origin, String destination, LocalDateTime departureDate, LocalDateTime arrivalDate) {
         this.flightNo = flightNo;
         this.origin = origin;
+        this.nFreeSeats = 1;
         this.destination = destination;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
@@ -103,6 +105,29 @@ public class Flight {
         this.departureDate = departureDate;
     }
 
+
+    /**
+     * Decreases the number of availible seats by n.
+     * 
+     * @param int n number of seats to book
+     * 
+     */
+    public void bookNSeats(int n) {
+        this.nFreeSeats -= n;
+    }
+
+    /**
+     * Checks availability
+     * 
+     * @param n numer of seats to check
+     */
+    public boolean checkNSeats(int n) {
+        if (this.nFreeSeats - n >= 0) {
+            return true;
+        } 
+        return false;
+    }
+
     /**
      * Returns the arrival date and time.
      *
@@ -134,6 +159,7 @@ public class Flight {
                 "destination='" + destination + "\n" +
                 "departureDate=" + departureDate + "\n" +
                 "arrivalDate=" + arrivalDate + "\n" +
+                "nFreeSeats=" + nFreeSeats + "\n" +
                 '}';
     }
 }

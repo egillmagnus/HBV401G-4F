@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class MainApplication {
     private static Scanner scanner = new Scanner(System.in);
@@ -233,7 +232,11 @@ public class MainApplication {
         if (user != null) {
             System.out.print("Enter booking number: ");
             Booking booking = bookingController.createBooking(user, List.of(selectedFlight), passengers);
-            System.out.println("Booking created successfully with booking number: " + booking.getBookingNo());
+            if (booking.getBookingNo() == null) {
+                System.out.println("Booking failed, not enough avalible seats, please try again.");
+            } else {
+                System.out.println("Booking created successfully with booking number: " + booking.getBookingNo());
+            }
         } else {
             System.out.println("Failed to create booking. No valid user.");
         }
