@@ -142,14 +142,13 @@ public class MainApplication {
     private static void bookFlight() {
         System.out.println("Booking a Flight:");
     
-        // Step 1: View Flights
         System.out.println("Choose an option:");
         System.out.println("1. See all available flights");
         System.out.println("2. See all flights from a departure city");
         System.out.println("3. See all flights from a departure city to an arrival city");
         System.out.print("Enter your choice: ");
         int option = scanner.nextInt();
-        scanner.nextLine(); // consume the newline
+        scanner.nextLine(); 
     
         List<Flight> flights = new ArrayList<>();
         String departureCity, arrivalCity;
@@ -186,7 +185,7 @@ public class MainApplication {
             System.out.printf("%d. %s from %s to %s on %s\n", i + 1, flight.getFlightNo(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate().format(formatter));
         }
     
-        // Select a flight
+
         System.out.print("Select a flight number to book: ");
         int flightIndex = scanner.nextInt() - 1;
         scanner.nextLine();  // consume the newline
@@ -196,7 +195,6 @@ public class MainApplication {
         }
         Flight selectedFlight = flights.get(flightIndex);
     
-        // Step 2: Add Passengers
         List<Passenger> passengers = new ArrayList<>();
         System.out.print("Enter number of passengers: ");
         int numPassengers = scanner.nextInt();
@@ -211,7 +209,6 @@ public class MainApplication {
             passengers.add(passenger);
         }
     
-        // Step 3: Complete Booking
         System.out.print("Enter user ID for booking or press 0 to register a new user: ");
         int userId = scanner.nextInt();
         scanner.nextLine();
@@ -228,7 +225,6 @@ public class MainApplication {
             user = createUser();
         }
 
-        // Final step to create booking if the user exists
         if (user != null) {
             System.out.print("Enter booking number: ");
             Booking booking = bookingController.createBooking(user, List.of(selectedFlight), passengers);

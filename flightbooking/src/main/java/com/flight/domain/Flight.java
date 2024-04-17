@@ -25,7 +25,7 @@ public class Flight {
     public Flight(String flightNo, String origin, String destination, LocalDateTime departureDate, LocalDateTime arrivalDate) {
         this.flightNo = flightNo;
         this.origin = origin;
-        this.nFreeSeats = 1;
+        this.nFreeSeats = 100;
         this.destination = destination;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
