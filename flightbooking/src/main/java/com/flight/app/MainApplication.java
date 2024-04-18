@@ -27,32 +27,37 @@ public class MainApplication {
 
     public static void main(String[] args) {
         boolean running = true;
+
         System.setProperty("file.encoding", "UTF-8");
         while (running) {
             System.out.println("\nWelcome to the Flight Booking System");
-            System.out.println("1. Manage Flights");
-            System.out.println("2. Book Flight");
-            System.out.println("3. Exit");
-
+            System.out.println("1. Book Flights");
+            System.out.println("2. Manage Flights");
+            System.out.println("3. Manage Bookings");
+            System.out.println("4. Exit");
+    
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // consume the newline
-
+            scanner.nextLine(); 
+    
             switch (choice) {
                 case 1:
-                    manageFlights();
-                    break;
-                case 2:
                     bookFlight();
                     break;
+                case 2:
+                    manageFlights();
+                    break;
                 case 3:
+                    manageBookings();
+                    break;
+                case 4:
                     running = false;
                     break;
                 default:
                     System.out.println("Invalid option. Please choose again.");
             }
         }
-
+    
         scanner.close();
         System.out.println("Thank you for using the Flight Booking System!");
     }
@@ -67,7 +72,7 @@ public class MainApplication {
 
             System.out.print("Select an option: ");
             int option = scanner.nextInt();
-            scanner.nextLine(); // consume the newline
+            scanner.nextLine();
 
             switch (option) {
                 case 1:
@@ -105,14 +110,13 @@ public class MainApplication {
     private static void updateFlight() {
         System.out.println("Updating an Existing Flight:");
 
-        // Display all available flights
         List<Flight> flights = flightController.getAllFlights();
         if (flights.isEmpty()) {
             System.out.println("No flights available to update.");
             return;
         }
     
-        System.out.println("Available Flights:");
+        System.out.println("\nAvailable Flights:");
         for (Flight flight : flights) {
             System.out.printf("Flight Number: %s, From: %s, To: %s, Departure: %s, Arrival: %s\n",
                               flight.getFlightNo(), flight.getOrigin(), flight.getDestination(),
@@ -144,62 +148,77 @@ public class MainApplication {
     private static void bookFlight() {
         List<Flight> selectedFlights = new ArrayList<>();
 
-    while (true) {
-        System.out.println("\nBooking a Flight:");
-        System.out.println("Choose an option:");
-        System.out.println("1. See all available flights");
-        System.out.println("2. See all flights from a departure city");
-        System.out.println("3. See all flights from a departure city to an arrival city");
-        System.out.println("4. See all flights from a departure city to an arrival city on a specific date");
-        System.out.println("5. Back to Main Menu");
+        while (true) {
+            System.out.println("\nBooking a Flight:");
+            System.out.println("Choose an option:");
+            System.out.println("1. See all available flights");
+            System.out.println("2. See all flights from a departure city");
+            System.out.println("3. See all flights from a departure city to an arrival city");
+            System.out.println("4. See all flights from a departure city to an arrival city on a specific date");
+            System.out.println("5. See flights in cart.");
+            System.out.println("6. Clear cart");
+            System.out.println("7. Back to Main Menu");
 
-        System.out.print("Enter your choice: ");
-        int option = scanner.nextInt();
-        scanner.nextLine(); // consume the newline
+            System.out.print("Enter your choice: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();
 
-        if (option == 5) {
-            System.out.println("Returning to Main Menu...");
-            return;  // Breaks the loop and exits the booking function
-        }
+            if (option == 7) {
+                System.out.println("Returning to Main Menu...");
+                return; 
+            }
 
-        List<Flight> flights = new ArrayList<>();
-        String departureCity, arrivalCity;
-        LocalDateTime departureDate;
+            List<Flight> flights = new ArrayList<>();
+            String departureCity, arrivalCity;
+            LocalDateTime departureDate;
 
-        switch (option) {
-            case 1:
-                flights = flightController.getAllFlights();
-                break;
-            case 2:
-                System.out.print("Enter departure city: ");
-                departureCity = scanner.nextLine();
-                flights = flightController.getFlightsByDepartureCity(departureCity);
-                break;
-            case 3:
-                System.out.print("Enter departure city: ");
-                departureCity = scanner.nextLine();
-                System.out.print("Enter arrival city: ");
-                arrivalCity = scanner.nextLine();
-                flights = flightController.getFlightsFromTo(departureCity, arrivalCity);
-                break;
-            case 4:
-                System.out.print("Enter departure city: ");
-                departureCity = scanner.nextLine();
-                System.out.print("Enter arrival city: ");
-                arrivalCity = scanner.nextLine();
-                System.out.print("Enter departure date (yyyy-MM-dd): ");
-                departureDate = LocalDate.parse(scanner.nextLine(), dateFormatter).atStartOfDay();
-                flights = flightController.getFlightsFromToByDate(departureCity, arrivalCity, departureDate);
-                break;
-            default:
-                System.out.println("Invalid option. Please try again.");
+            switch (option) {
+                case 1:
+                    flights = flightController.getAllFlights();
+                    break;
+                case 2:
+                    System.out.print("Enter departure city: ");
+                    departureCity = scanner.nextLine();
+                    flights = flightController.getFlightsByDepartureCity(departureCity);
+                    break;
+                case 3:
+                    System.out.print("Enter departure city: ");
+                    departureCity = scanner.nextLine();
+                    System.out.print("Enter arrival city: ");
+                    arrivalCity = scanner.nextLine();
+                    flights = flightController.getFlightsFromTo(departureCity, arrivalCity);
+                    break;
+                case 4:
+                    System.out.print("Enter departure city: ");
+                    departureCity = scanner.nextLine();
+                    System.out.print("Enter arrival city: ");
+                    arrivalCity = scanner.nextLine();
+                    System.out.print("Enter departure date (yyyy-MM-dd): ");
+                    departureDate = LocalDate.parse(scanner.nextLine(), dateFormatter).atStartOfDay();
+                    flights = flightController.getFlightsFromToByDate(departureCity, arrivalCity, departureDate);
+                    break;
+                case 5:
+                    if(selectedFlights.size() == 0) {
+                        System.out.println("Your cart is empty");
+                        break;
+                    }
+                    for(int i = 0; i < selectedFlights.size(); i++) {
+                        Flight flight = selectedFlights.get(i);
+                        System.out.printf("%d. %s from %s to %s on %s\n", i + 1, flight.getFlightNo(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate().format(formatter));
+                    }
+                    break;
+                case 6:
+                    selectedFlights = new ArrayList<>();
+                    System.out.println("Cart emptyed!");
+                default:
+                    System.out.println("Invalid option. Please try again.");
+                    continue;
+            }
+
+            if (flights.isEmpty()) {
+                System.out.println("No flights available for the selected criteria.");
                 continue;
-        }
-
-        if (flights.isEmpty()) {
-            System.out.println("No flights available for the selected criteria.");
-            continue;
-        }
+            }
     
             System.out.println("Available Flights:");
             for (int i = 0; i < flights.size(); i++) {
@@ -207,27 +226,29 @@ public class MainApplication {
                 System.out.printf("%d. %s from %s to %s on %s\n", i + 1, flight.getFlightNo(), flight.getOrigin(), flight.getDestination(), flight.getDepartureDate().format(formatter));
             }
     
-            System.out.print("Select a flight number to book or -1 to finish selecting flights: ");
+            System.out.print("\nSelect a flight number to book or -1 to finish selecting flights: ");
             int flightIndex = scanner.nextInt() - 1;
-            scanner.nextLine(); // consume the newline
+            scanner.nextLine();
             if (flightIndex == -2) {
-                break; // User finished selecting flights
+                System.out.println("Finishing selecting flights");
+                break;
             } else if (flightIndex < 0 || flightIndex >= flights.size()) {
                 System.out.println("Invalid flight selection.");
                 continue;
             } else {
-                selectedFlights.add(flights.get(flightIndex));
+                Flight selectedFlight = flights.get(flightIndex);
+                System.out.println("Flight " + selectedFlight.getFlightNo() + " added to cart");
+                selectedFlights.add(selectedFlight);
             }
         }
     
         if (selectedFlights.isEmpty()) {
             System.out.println("No flights have been selected.");
             return;
-        }
+        } 
     
-        // Now ask for passenger details once all flights are selected
         List<Passenger> passengers = new ArrayList<>();
-        System.out.print("Enter number of passengers for all selected flights: ");
+        System.out.print("\nEnter number of passengers for all selected flights: ");
         int numPassengers = scanner.nextInt();
         scanner.nextLine();
         for (int i = 0; i < numPassengers; i++) {
@@ -257,40 +278,103 @@ public class MainApplication {
         }
     
         if (user != null) {
-            // Attempt to create one booking for all selected flights
             Booking booking = bookingController.createBooking(user, selectedFlights, passengers);
             if (booking != null) {
-                System.out.println("Booking created successfully with booking number: " + booking.getBookingNo());
+                System.out.println("\nBooking created successfully with booking number: " + booking.getBookingNo());
             } else {
-                System.out.println("Booking failed. Please try again.");
+                System.out.println("\nBooking failed. Please try again.");
             }
         } else {
-            System.out.println("Failed to create bookings. No valid user.");
+            System.out.println("\nFailed to create bookings. No valid user.");
         }
     }
     
 
     private static User createUser() {
-        System.out.println("Registering New User:");
-        System.out.print("Enter name: ");
+        System.out.println("\nRegistering New User:");
+        System.out.print("\nEnter name: ");
         String name = scanner.nextLine();
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
         System.out.print("Enter phone number: ");
         int phone = scanner.nextInt();
-        scanner.nextLine();  // consume the newline
+        scanner.nextLine(); 
         System.out.print("Enter a unique user ID: ");
         int userId = scanner.nextInt();
-        scanner.nextLine();  // consume the newline
+        scanner.nextLine();
 
         User newUser = userController.createUser(name, userId, email, phone);
         if (newUser == null) {
-            System.out.println("A user with this ID already exists. Please try again.");
+            System.out.println("\nA user with this ID already exists. Please try again.");
             return null;
         } else {
-            System.out.println("User created successfully!");
+            System.out.println("\nUser created successfully!");
             return newUser;
         }
+    }
+
+
+    private static void manageBookings() {
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("\nBooking Management:");
+            System.out.println("1. View All Bookings");
+            System.out.println("2. Delete Booking");
+            System.out.println("3. Return to Main Menu");
+    
+            System.out.print("Select an option: ");
+            int option = scanner.nextInt();
+            scanner.nextLine();     
+            switch (option) {
+                case 1:
+                    viewAllBookings();
+                    break;
+                case 2:
+                    deleteBooking();
+                    break;
+                case 3:
+                    keepRunning = false;
+                    break;
+                default:
+                    System.out.println("\nInvalid option. Please choose again.\n");
+            }
+        }
+    }
+
+    private static void viewAllBookings() {
+        List<Booking> bookings = bookingController.getAllBookings();
+        if (bookings.isEmpty()) {
+            System.out.println("\nNo bookings available.");
+        } else {
+            for (int i = 0; i < bookings.size(); i++) {
+                Booking booking = bookings.get(i);
+                System.out.println("");
+                System.out.println("Booking Number: " + booking.getBookingNo());
+                System.out.println("User: " + booking.getUser().getName());
+                for (Flight flight : booking.getFlights()) {
+                    System.out.println("Flight: " + flight.getFlightNo() + " from " 
+                                        + flight.getOrigin() + " to " + flight.getDestination() 
+                                        + ", on " + flight.getDepartureDate().format(formatter));
+                }
+                for (Passenger passenger : booking.getPassengers()) {
+                    System.out.println("Passenger: " + passenger.getName());
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    private static void deleteBooking() {
+        System.out.print("\nEnter the booking number to delete: ");
+        String bookingNo = scanner.nextLine();
+        Booking booking = bookingController.getBooking(bookingNo);
+        if (booking == null) {
+            System.out.println("\nNo booking found with the provided number.");
+            return;
+        }
+
+        bookingController.deleteBooking(bookingNo);
+        System.out.println("\nBooking deleted successfully.");
     }
     
 }

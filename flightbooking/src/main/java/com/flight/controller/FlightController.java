@@ -3,6 +3,8 @@ package com.flight.controller;
 import com.flight.database.FlightDB;
 import com.flight.domain.Flight;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import java.util.stream.Collectors;
  */
 public class FlightController {
     private FlightDB flightDB;
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     /**
      * Constructs a new FlightController and initializes its flight database.
@@ -89,9 +92,13 @@ public class FlightController {
      * @return A list of flights departing from the specified city.
      */
     public List<Flight> getFlightsByDepartureCity(String departureCity) {
-        return flightDB.getAllFlights().stream()
-                       .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity))
-                       .collect(Collectors.toList());
+        List<Flight> flights = new ArrayList<>();
+        for (Flight flight : flightDB.getAllFlights()) {
+            if (flight.getOrigin().equals(departureCity)) {
+                flights.add(flight);
+            }
+        }
+        return flights;
     }
 
     /**
@@ -112,7 +119,7 @@ public class FlightController {
         return flights.stream()
                 .filter(flight -> flight.getOrigin().equalsIgnoreCase(departureCity))
                 .filter(flight -> flight.getDestination().equalsIgnoreCase(arrivalCity))
-                .filter(flight -> flight.getDepartureDate().isEqual(departureDate))
+                .filter(flight -> flight.getDepartureDate().format(dateFormatter).equals(departureDate.format(dateFormatter)))
                 .collect(Collectors.toList());
     }
 }
