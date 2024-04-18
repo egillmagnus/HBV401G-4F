@@ -1,6 +1,9 @@
 package com.flight.controller;
 
 import com.flight.domain.Passenger;
+
+import java.util.List;
+
 import com.flight.database.PassengerDB;
 
 /**
@@ -47,8 +50,17 @@ public class PassengerController {
      *
      * @param passenger The {@link Passenger} object to be deleted.
      */
-    public void deletePassenger(Passenger passenger) {
-        passengerDB.delete(passenger);
+    public boolean deletePassenger(String ssn) {
+
+        return passengerDB.delete(ssn);
     }
 
+    /**
+     * Retrieves all passengers currently stored in the database.
+     *
+     * @return A {@link List} of {@link Passenger} objects representing all passengers.
+     */
+    public List<Passenger> getAllPassengers() {
+        return passengerDB.getAllPassengers();
+    }
 }

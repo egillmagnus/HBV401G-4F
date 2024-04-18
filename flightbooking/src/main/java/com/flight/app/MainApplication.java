@@ -27,18 +27,20 @@ public class MainApplication {
 
     public static void main(String[] args) {
         boolean running = true;
-
+        Scanner scanner = new Scanner(System.in);
+    
         System.setProperty("file.encoding", "UTF-8");
         while (running) {
             System.out.println("\nWelcome to the Flight Booking System");
             System.out.println("1. Book Flights");
             System.out.println("2. Manage Flights");
             System.out.println("3. Manage Bookings");
-            System.out.println("4. Exit");
+            System.out.println("4. Manage Passengers");
+            System.out.println("5. Exit");
     
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            scanner.nextLine();
     
             switch (choice) {
                 case 1:
@@ -51,6 +53,9 @@ public class MainApplication {
                     manageBookings();
                     break;
                 case 4:
+                    managePassengers();
+                    break;
+                case 5:
                     running = false;
                     break;
                 default:
@@ -61,6 +66,7 @@ public class MainApplication {
         scanner.close();
         System.out.println("Thank you for using the Flight Booking System!");
     }
+    
 
     private static void manageFlights() {
         boolean keepRunning = true;
@@ -376,5 +382,54 @@ public class MainApplication {
         bookingController.deleteBooking(bookingNo);
         System.out.println("\nBooking deleted successfully.");
     }
+
+    private static void managePassengers() {
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("\nPassenger Management:");
+            System.out.println("1. View All Passengers");
+            System.out.println("2. Delete Passenger");
+            System.out.println("3. Return to Main Menu");
+    
+            System.out.print("Select an option: ");
+            int option = scanner.nextInt();
+            scanner.nextLine(); // consume the newline
+    
+            switch (option) {
+                case 1:
+                    viewAllPassengers();
+                    break;
+                case 2:
+                    deletePassenger();
+                    break;
+                case 3:
+                    keepRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose again.");
+            }
+        }
+    }
+    
+    private static void viewAllPassengers() {
+        List<Passenger> passengers = passengerController.getAllPassengers();
+        if (passengers.isEmpty()) {
+            System.out.println("No passengers found.");
+        } else {
+            passengers.forEach(passenger -> System.out.println("Passenger SSN: " + passenger.getSocialSecurityNo() + ", Name: " + passenger.getName()));
+        }
+    }
+    
+    private static void deletePassenger() {
+        System.out.print("Enter the SSN of the passenger to delete: ");
+        String ssn = scanner.nextLine();
+        boolean success = passengerController.deletePassenger(ssn);
+        if (success) {
+            System.out.println("Passenger deleted successfully.");
+        } else {
+            System.out.println("Passenger not found.");
+        }
+    }
+    
     
 }

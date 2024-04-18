@@ -48,18 +48,19 @@ public class PassengerDB {
      *
      * @param passenger The {@link Passenger} to remove.
      */
-    public void delete(Passenger passenger) {
-        if (passenger != null) {
-            passengers.removeIf(p -> p.getSocialSecurityNo().equals(passenger.getSocialSecurityNo()));
+    public boolean delete(String ssn) {
+        boolean success = false;
+        if (ssn != null) {
+            success = passengers.removeIf(p -> p.getSocialSecurityNo().equals(ssn));
         }
+        return success;
     }
-
     /**
-     * Retrieves all passengers currently stored in the database.
-     *
-     * @return A {@link List} of {@link Passenger} objects representing all passengers.
-     */
+    * Retrieves all passengers currently stored in the database.
+    *
+    * @return A {@link List} of {@link Passenger} objects representing all passengers.
+    */
     public List<Passenger> getAllPassengers() {
-        return new ArrayList<>(passengers);
+       return new ArrayList<>(passengers);
     }
 }
