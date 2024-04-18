@@ -285,7 +285,7 @@ public class MainApplication {
     
         if (user != null) {
             Booking booking = bookingController.createBooking(user, selectedFlights, passengers);
-            if (booking != null) {
+            if (booking.getBookingNo() != null) {
                 System.out.println("\nBooking created successfully with booking number: " + booking.getBookingNo());
             } else {
                 System.out.println("\nBooking failed. Please try again.");
